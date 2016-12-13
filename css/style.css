@@ -32,12 +32,15 @@
 html {
   width: 100%;
   height: 100%;
-  background: #1192d3 no-repeat bottom right;
+ 
   background-size: cover;
 }
+.btn-primary{
+background-color:	#2196F3 !important;
 
+}
 body {
-  padding: 45px 0;
+  padding: 0 0;
   font: 13px 'Open Sans', "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
@@ -122,21 +125,20 @@ i {
 }
 
 #weather li {
-  background: #fff;
-  background: rgba(255,255,255,0.90);
-  
   display: inline-block;
-  border-radius: 5px;
+
+	
 }
 
 #weather .currently {
-  margin: 0 20px;
+  margin: 0 15px;
 }
 
 ul.next li{
-	padding: 10px !important;
-	background-color: #1192d3 !important;
+	padding: 15px !important;
+	background-color: #2196F3 !important;
 	color:white;
+	border: 0px;
 }
 #mapholder{
 	margin:15px 0 15px 0;
@@ -146,4 +148,18 @@ ul.next li{
 .currently{
 	font-weight:700;
 	padding:15px;
+}
+
+#getgeo{
+	margin: 15px;
+}
+
+#getgeo i{
+	color:white;
+}
+
+.notification{
+	text-align:center;
+	font-weight:700;
+	text-transform:uppercase;
 }
