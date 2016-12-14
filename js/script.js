@@ -10,14 +10,13 @@ var timeoutId;
 // weather wgt
 $(document).ready(function() {
 
+StartProcess();
 
 	$( ".notification" ).hide();
 	
 	$( "#temp" ).bind( "click", togglet);
 	
-	timeoutId = window.setTimeout(StartProcess(), myApp.template7Data.index.timeout);
-	
-	
+
 	$('#getgeo').click(function(){
 
 		if ("geolocation" in navigator) {
@@ -42,10 +41,11 @@ $(document).ready(function() {
 
 // use ip if position is not granted
 function errorPosition(){
-	
+		localStorage.clear();
 	if(showerror == 1){
 		showNotificationError('GPS position not used, data probably incorrect');
 		showerror =0;
+
 	}
 	$.getJSON('//freegeoip.net/json/?callback=?', function(data) {
 		var lat = data.latitude;
@@ -60,43 +60,71 @@ function errorPosition(){
 function getData(){
 	if(toggle==1)var unit = 'c';
 	else var unit = 'f';
+	if (localStorage.getItem("w") === null) {
+
 	$.simpleWeather({
 		location: myApp.template7Data.index.lat+','+myApp.template7Data.index.lon,
 		woeid: '',
 		unit: unit,
 		success: function(weather) {
-
+			console.log("apicall succ");
 			myApp.template7Data.index.w = weather;
-			clearTimeout(timeoutId) ;
-			myApp.template7Data.index.timeout = 6000000;
-
-			console.log(myApp.template7Data.index.timeout);
-
 			$('#temp').html('<h2 id="temp"><i class="icon-'+weather.code+'"></i> '+weather.temp+'&deg;'+weather.units.temp+'</h2>');
 			$('.currently').html(weather.city);
 			$('.max').html(weather.high);
 			$('.min').html(weather.low);
-			var lis= $( ".next li" );
+			var lis= $( ".next div" );
 			for(var i=0; i<4;i++){
 
 				var string ="<strong>"+weather.forecast[i].day+"</strong><br> MAX "+weather.forecast[i].high+"<br> MIN "+weather.forecast[i].low;
 				lis.eq(i).html(string);
 
 			}
-			timeoutId = window.setTimeout(StartProcess(), myApp.template7Data.index.timeout);
-
+           myApp.hideIndicator();
+		localStorage.setItem('w', JSON.stringify(weather));
 
 		},
 		error: function(error) {
-		console.log("error: "+myApp.template7Data.index.timeout);
-
-			myApp.template7Data.index.timeout = 60000;
-			clearTimeout(timeoutId) ;
-			timeoutId = window.setTimeout(StartProcess(), myApp.template7Data.index.timeout);
 
 
+			console.log("apicall error: "+error);
+			StartProcess();
 		}
 	});
+}else{
+	console.log("localstorage");
+	myApp.template7Data.index.w = JSON.parse(localStorage.getItem("w"));
+           myApp.hideIndicator();
+	if(toggle==1){
+	$('#temp').html('<h2 id="temp"><i class="icon-'+myApp.template7Data.index.w.code+'"></i> '+myApp.template7Data.index.w.temp+'&deg;'+myApp.template7Data.index.w.units.temp+'</h2>');
+			$('.currently').html(myApp.template7Data.index.w.city);
+			$('.max').html(myApp.template7Data.index.w.high);
+			$('.min').html(myApp.template7Data.index.w.low);
+			var lis= $( ".next div" );
+			for(var i=0; i<4;i++){
+
+				var string ="<strong>"+myApp.template7Data.index.w.forecast[i].day+"</strong><br> MAX "+myApp.template7Data.index.w.forecast[i].high+"<br> MIN "+myApp.template7Data.index.w.forecast[i].low;
+				lis.eq(i).html(string);
+
+			}
+	}else{
+		$('#temp').html('<h2 id="temp"><i class="icon-'+myApp.template7Data.index.w.code+'"></i> '+myApp.template7Data.index.w.alt.temp+'&deg;'+myApp.template7Data.index.w.units.temp+'</h2>');
+			$('.currently').html(myApp.template7Data.index.w.city);
+			$('.max').html(myApp.template7Data.index.w.alt.high);
+			$('.min').html(myApp.template7Data.index.w.alt.low);
+			var lis= $( ".next div" );
+			for(var i=0; i<4;i++){
+
+				var string ="<strong>"+myApp.template7Data.index.w.forecast[i].day+"</strong><br> MAX "+myApp.template7Data.index.w.forecast[i].alt.high+"<br> MIN "+myApp.template7Data.index.w.forecast[i].alt.low;
+				lis.eq(i).html(string);
+
+			}	
+	}
+
+
+
+}
+
 }
 
 
@@ -105,12 +133,12 @@ function togglet(){
 
 	if(toggle == 0){
 		toggle =1;
-		$( "#temp" ).html('<h2 id="temp"><i class="icon-'+w.code+'"></i> '+w.temp+'&deg;C</h2>');
-		getData(lat,lon);
+		$( "#temp" ).html('<h2 id="temp"><i class="icon-'+myApp.template7Data.index.w.code+'"></i> '+myApp.template7Data.index.w.temp+'&deg;C</h2>');
+		getData();
 	}else{
 		toggle =0;
-		$( "#temp" ).html('<h2 id="temp"><i class="icon-'+w.code+'"></i> '+w.alt.temp+'&deg;F</h2>');
-		getData(lat,lon);
+		$( "#temp" ).html('<h2 id="temp"><i class="icon-'+myApp.template7Data.index.w.code+'"></i> '+myApp.template7Data.index.w.alt.temp+'&deg;F</h2>');
+		getData();
 	}
 }
 
@@ -123,7 +151,7 @@ function showPosition(position) {
 
 
 function StartProcess(){
-
+myApp.showIndicator();
 	if ("geolocation" in navigator) {
 		navigator.geolocation.getCurrentPosition(function(position) {
 

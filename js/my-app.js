@@ -11,38 +11,22 @@ var myApp = new Framework7({
 	animateNavBackIcon: true,
 	precompileTemplates: true,
 	template7Pages: true,
-
+  onAjaxStart: function (xhr) { myApp.showIndicator(); },
+    onAjaxComplete: function (xhr) { myApp.hideIndicator()},
 	template7Data: {
 
 		index: {
 			w: "",
 			lat:0,
 			lon: 0,
-			timeout: 6000000
+			timeout: 600,
+			timeoutId: 0
 		}
 	}
+
 });
 
-
-
 myApp.onPageBeforeInit('index', function (page) {
-
-	if ("geolocation" in navigator) {
-		navigator.geolocation.getCurrentPosition(function(position) {
-
-			lat = position.coords.latitude;
-			lon=position.coords.longitude;
-			myApp.template7Data.index.lat = lat;
-			myApp.template7Data.index.lon = lon;
-
-		});
-
-
-	} else {
-		errorPosition();
-
-
-	}
 
 
 }).trigger(); 
@@ -50,6 +34,11 @@ myApp.onPageBeforeInit('index', function (page) {
 
 // Export selectors engine
 var $$ = Dom7;
+var ptrContent = $$('.pull-to-refresh-content');
+
+	ptrContent.on('refresh',function(){
+		localStorage.clear();
+	});
 
 // Add main View
 var mainView = myApp.addView('.view-main', {
