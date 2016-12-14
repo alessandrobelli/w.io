@@ -82,7 +82,11 @@ function getData(){
 			}
            myApp.hideIndicator();
 		localStorage.setItem('w', JSON.stringify(weather));
+		if(weather.code == 28){
+			$('body').css('background-color','#333');
+			$('body').addClass('snow');
 
+		}
 		},
 		error: function(error) {
 
@@ -121,7 +125,10 @@ function getData(){
 			}	
 	}
 
-
+		if(myApp.template7Data.index.w.code == 28){
+			$('body').css('background-color','#333');
+			$('body').addClass('snow');
+		}
 
 }
 
