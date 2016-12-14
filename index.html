@@ -2,8 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">  <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
 
@@ -67,7 +66,7 @@ body {
 }
 
 #weather {
-  width: 500px;
+  width: 100%;
   margin: 0px auto;
   text-align: center;
   text-transform: uppercase;
@@ -141,7 +140,7 @@ i {
   text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
 }
 
-#weather ul {
+#weather div {
   margin: 0;
   padding: 0;
 }
@@ -156,7 +155,7 @@ i {
   margin: 0 15px;
 }
 
-ul.next li{
+div.next div{
   padding: 15px !important;
   background-color: #2196F3 !important;
   color:white;
@@ -194,29 +193,44 @@ ul.next li{
 
 
   <!-- Views-->
-  <div class="view-main" >
-
+  <div class="view-main page-content pull-to-refresh-content container" >
+    <!-- Default pull to refresh layer-->
+    <div class="pull-to-refresh-layer">
+      <div class="preloader"></div>
+      <div class="pull-to-refresh-arrow"></div>
+    </div>
     <div data-role="page" id="first-page" data-template="index">
+	<div class="row">
       <div class="alert alert-danger notification"></div>
+	  </div>
+	  
       <div id="weather">
-
-        <h2 id="temp"></h2>
-        <ul>
-          <li class="max">max</li>
-          <li class="currently" ></li>
-          <li class="min">min</li>
-        </ul>
-        <ul class="next">
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-
+<div class="row">
+        <div class="col-xs-6 col-sm-12">
+		<h2 id="temp"></h2>
+		</div>
+		</div>
+		
+		<div class="row">
+        
+		<div class="max col-xs-12 col-sm-2 col-lg-2" style="text-align: right;">
+max
+     
+     </div>
+          <div class="currently col-xs-12 col-sm-6 col-lg-6" style="text-align: center"></div>
+          <div class="min col-xs-12 col-sm-2 col-lg-2" style="text-align: left">min</div>
+		</div>
+        <div class="next row" style="margin-top: 15px;">
+          <div class="col-xs-12 col-sm-2 col-lg-2"></div>
+          <div class="col-xs-12 col-sm-2 col-lg-2"></div>
+          <div class="col-xs-12 col-sm-2 col-lg-2"></div>
+          <div class="col-xs-12 col-sm-2 col-lg-2"></div>
+</div>
         <!--  <div id="mapholder"></div> -->
         <!-- <button data-role="button" id="getgeo" class="btn btn-primary"><i class="fa fa-map-marker fa-3x" aria-hidden="true"></i></button> -->
       </div>
     </div>
-  </div>
+</div>
    </script>
   <!-- Path to Framework7 Library JS-->
   <script type="text/javascript" src="js/framework7.min.js"></script>
